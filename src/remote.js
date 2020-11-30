@@ -30,8 +30,8 @@ Library.buildPlugin = function(config) {
             after: (moduleToPatch, functionName, callback, options = {}) => {return Library.Patcher.after(name, moduleToPatch, functionName, callback, options);}
         }
     };
-    
-    return [Library.Structs.Plugin(config), Object.assign({}, Library, BoundAPI)];
+
+    return [Library.Structs.Plugin(config), Object.assign({}, Library, BoundAPI)]; // eslint-disable-line new-cap
 };
 
 if (document.getElementById("ZLibraryCSS")) document.getElementById("ZLibraryCSS").remove();
