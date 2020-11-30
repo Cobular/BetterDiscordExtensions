@@ -1,0 +1,27 @@
+{
+  "info": {
+    "name": "CopyMoji",
+    "authors": [
+      {
+        "name": "Cobular",
+        "discord_id": "249705405372956672",
+        "github_username": "JakeCover",
+        "twitter_username": "cobular_"
+      }
+    ],
+    "version": "0.0.1",
+    "description": "A BetterDiscord plugin to enable the copying of actual emojis, not their names",
+    "github": "",
+    "github_raw": ""
+  },
+  "changelog": [
+    {
+      "title": "Created Plugin",
+      "items": [
+        "Created the plugin!!",
+        "Wowza!!"
+      ]
+    }
+  ],
+  "main": "index.js"
+}
