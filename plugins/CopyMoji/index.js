@@ -1,23 +1,10 @@
 module.exports = (Plugin, Library) => {
 
-  const {Logger, Patcher, Settings, DOMTools, ReactTools} = Library;
+  const {Logger, Settings, DOMTools} = Library;
 
   return class CopyMoji extends Plugin {
     constructor() {
       super();
-      this.defaultSettings = {};
-      this.defaultSettings.color = "#ff0000";
-      this.defaultSettings.option = 50;
-      this.defaultSettings.keybind = [162, 74];
-      this.defaultSettings.radio = "weiner";
-      this.defaultSettings.slider1 = 30;
-      this.defaultSettings.slider2 = 54;
-      this.defaultSettings.textbox = "nothing";
-      this.defaultSettings.switch1 = false;
-      this.defaultSettings.switch2 = true;
-      this.defaultSettings.switch3 = true;
-      this.defaultSettings.switch4 = false;
-      this.defaultSettings.file = undefined;
       this.subscriptions = [];
       this.emojiLookup = new Map();
     }
@@ -32,14 +19,12 @@ module.exports = (Plugin, Library) => {
 
     onStop() {
       Logger.log("Stopped");
-      Patcher.unpatchAll();
       this.subscriptions.forEach((value) => {
         DOMTools.observer.unsubscribe(value);
       });
     }
 
     onEmojiRender(event) {
-      console.log("thing was ran");
       try {
         // If the update is not of type childList, then we don't care
         event.forEach(mutationRecord => {
