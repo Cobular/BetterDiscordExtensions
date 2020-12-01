@@ -9,10 +9,10 @@
         "twitter_username": "cobular_"
       }
     ],
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "A BetterDiscord plugin to enable the copying of actual emojis, not their names",
-    "github": "",
-    "github_raw": ""
+    "github": "https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji",
+    "github_raw": "https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/plugins/CopyMoji/index.js"
   },
   "changelog": [
     {
