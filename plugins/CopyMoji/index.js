@@ -6,7 +6,7 @@ module.exports = (Plugin, Library) => {
     constructor() {
       super();
       this.subscriptions = [];
-      this.emojiLookup = new Map();
+      this.emojiLookup = {};
     }
 
     onStart() {

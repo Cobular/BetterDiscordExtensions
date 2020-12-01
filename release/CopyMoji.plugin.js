@@ -5,7 +5,7 @@
  * @donate https://paypal.me/cobular
  * @patreon undefined
  * @website https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji
- * @source https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/plugins/CopyMoji/index.js
+ * @source https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js
  */
 /*@cc_on
 @if (@_jscript)
@@ -32,7 +32,7 @@
 @else@*/
 
 module.exports = (() => {
-    const config = {"info":{"name":"CopyMoji","authors":[{"name":"Cobular","discord_id":"249705405372956672","github_username":"JakeCover","twitter_username":"cobular_"}],"version":"1.0.0","description":"A BetterDiscord plugin to enable the copying of actual emojis, not their names","github":"https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji","github_raw":"https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/plugins/CopyMoji/index.js","paypalLink":"https://paypal.me/cobular"},"changelog":[{"title":"Created Plugin","items":["Created the plugin!!","Wowza!!"]}],"main":"index.js"};
+    const config = {"info":{"name":"CopyMoji","authors":[{"name":"Cobular","discord_id":"249705405372956672","github_username":"JakeCover","twitter_username":"cobular_"}],"version":"1.0.0","description":"A BetterDiscord plugin to enable the copying of actual emojis, not their names","github":"https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji","github_raw":"https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js","paypalLink":"https://paypal.me/cobular"},"changelog":[{"title":"Created Plugin","items":["Created the plugin!!","Wowza!!"]}],"main":"index.js"};
 
     return !global.ZeresPluginLibrary ? class {
         constructor() {this._config = config;}
@@ -57,13 +57,13 @@ module.exports = (() => {
     } : (([Plugin, Api]) => {
         const plugin = (Plugin, Library) => {
 
-  const {Logger, Patcher, Settings, DOMTools, ReactTools} = Library;
+  const {Logger, Settings, DOMTools} = Library;
 
   return class CopyMoji extends Plugin {
     constructor() {
       super();
       this.subscriptions = [];
-      this.emojiLookup = new Map();
+      this.emojiLookup = {};
     }
 
     onStart() {
@@ -76,14 +76,12 @@ module.exports = (() => {
 
     onStop() {
       Logger.log("Stopped");
-      Patcher.unpatchAll();
       this.subscriptions.forEach((value) => {
         DOMTools.observer.unsubscribe(value);
       });
     }
 
     onEmojiRender(event) {
-      console.log("thing was ran");
       try {
         // If the update is not of type childList, then we don't care
         event.forEach(mutationRecord => {
