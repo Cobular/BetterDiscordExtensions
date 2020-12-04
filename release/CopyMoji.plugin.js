@@ -1,15 +1,12 @@
 /**
  * @name CopyMoji
- * @invite undefined
- * @authorLink undefined
- * @donate https://paypal.me/cobular
- * @patreon undefined
+ * @donate true
  * @website https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji
  * @source https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js
  */
 /*@cc_on
 @if (@_jscript)
-	
+
 	// Offer to self-install for clueless users that try to run this directly.
 	var shell = WScript.CreateObject("WScript.Shell");
 	var fs = new ActiveXObject("Scripting.FileSystemObject");
@@ -32,7 +29,7 @@
 @else@*/
 
 module.exports = (() => {
-    const config = {"info":{"name":"CopyMoji","authors":[{"name":"Cobular","discord_id":"249705405372956672","github_username":"JakeCover","twitter_username":"cobular_"}],"version":"1.0.0","description":"A BetterDiscord plugin to enable the copying of actual emojis, not their names","github":"https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji","github_raw":"https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js","paypalLink":"https://paypal.me/cobular"},"changelog":[{"title":"Created Plugin","items":["Created the plugin!!","Wowza!!"]}],"main":"index.js"};
+    const config = {"info":{"name":"CopyMoji","authors":[{"name":"Cobular","discord_id":"249705405372956672","github_username":"JakeCover","twitter_username":"cobular_"}],"version":"1.1.0","description":"By default, when you select and copy text on discord with emojis in it, Discord decides that it should copy the message, not with the emojis as actual emojis, but as `:emojiName:` strings. For standard emojis, this behavior is really dumb!\nTo fix this, I made this plugin, which will change that default behavior. Instead of that, this will make it so that standard emojis (emojis that aren't set custom on a server) are actually copied the way you would expect, so they can be taken into other messaging apps or text documents!","github":"https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji","github_raw":"https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js","paypalLink":"https://paypal.me/cobular"},"changelog":[{"title":"A few updates - 1.1.0","items":["Removed unused settings menu","Fixed potential memory leak","Significantly expanded on description","Removed unnecessary console log. Sorry about that!","Removed unnecessary content from meta tag"]},{"title":"Created Plugin - 1.0.0","items":["Created the plugin!!","Wowza!!"]}],"main":"index.js"};
 
     return !global.ZeresPluginLibrary ? class {
         constructor() {this._config = config;}
@@ -62,23 +59,20 @@ module.exports = (() => {
   return class CopyMoji extends Plugin {
     constructor() {
       super();
-      this.subscriptions = [];
+      this.subscription = [];
       this.emojiLookup = {};
     }
 
     onStart() {
       // register an observer on emoji classes
       Logger.log("Started");
-      const subscription = DOMTools.observer.subscribeToQuerySelector(this.onEmojiRender, "img.emoji", this, true);
-      this.subscriptions.push(subscription);
+      this.subscription = DOMTools.observer.subscribeToQuerySelector(this.onEmojiRender, "img.emoji", this, true);
       this.generateEmojiMap(BdApi.findModuleByProps("EMOJI_NAME_RE").all());
     }
 
     onStop() {
       Logger.log("Stopped");
-      this.subscriptions.forEach((value) => {
-        DOMTools.observer.unsubscribe(value);
-      });
+      DOMTools.observer.unsubscribe(this.subscription);
     }
 
     onEmojiRender(event) {
@@ -86,9 +80,9 @@ module.exports = (() => {
         // If the update is not of type childList, then we don't care
         event.forEach(mutationRecord => {
           if (mutationRecord.type === "childList") {
-            if (mutationRecord.addedNodes.length === 0) {
-              Logger.log("No emojis added");
-            }
+            // if (mutationRecord.addedNodes.length === 0) {
+            //   Logger.log("No emojis added");
+            // }
 
             mutationRecord.addedNodes.forEach(addedNode => {
               // If node isn't an element, then we don't care.
@@ -101,7 +95,6 @@ module.exports = (() => {
                 if (!this.checkEmojiIsStandard(emoji.alt.replace(/:/g, ""))) {
                   return;
                 }
-
                 emoji.alt = this.emojiLookup[emoji.alt.replace(/:/g, "")];
               });
             });
@@ -124,14 +117,7 @@ module.exports = (() => {
     checkEmojiIsStandard(name) {
       return this.emojiLookup[name] !== undefined;
     }
-
-    getSettingsPanel() {
-      return Settings.SettingPanel.build(this.saveSettings.bind(this),
-        new Settings.SettingGroup("There are currently no settings. Sorry!!")
-        )
-    }
   };
-
 };
         return plugin(Plugin, Api);
     })(global.ZeresPluginLibrary.buildPlugin(config));

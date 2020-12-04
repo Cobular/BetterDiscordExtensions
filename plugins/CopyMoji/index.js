@@ -5,23 +5,20 @@ module.exports = (Plugin, Library) => {
   return class CopyMoji extends Plugin {
     constructor() {
       super();
-      this.subscriptions = [];
+      this.subscription = [];
       this.emojiLookup = {};
     }
 
     onStart() {
       // register an observer on emoji classes
       Logger.log("Started");
-      const subscription = DOMTools.observer.subscribeToQuerySelector(this.onEmojiRender, "img.emoji", this, true);
-      this.subscriptions.push(subscription);
+      this.subscription = DOMTools.observer.subscribeToQuerySelector(this.onEmojiRender, "img.emoji", this, true);
       this.generateEmojiMap(BdApi.findModuleByProps("EMOJI_NAME_RE").all());
     }
 
     onStop() {
       Logger.log("Stopped");
-      this.subscriptions.forEach((value) => {
-        DOMTools.observer.unsubscribe(value);
-      });
+      DOMTools.observer.unsubscribe(this.subscription);
     }
 
     onEmojiRender(event) {
@@ -29,9 +26,9 @@ module.exports = (Plugin, Library) => {
         // If the update is not of type childList, then we don't care
         event.forEach(mutationRecord => {
           if (mutationRecord.type === "childList") {
-            if (mutationRecord.addedNodes.length === 0) {
-              Logger.log("No emojis added");
-            }
+            // if (mutationRecord.addedNodes.length === 0) {
+            //   Logger.log("No emojis added");
+            // }
 
             mutationRecord.addedNodes.forEach(addedNode => {
               // If node isn't an element, then we don't care.
@@ -44,7 +41,6 @@ module.exports = (Plugin, Library) => {
                 if (!this.checkEmojiIsStandard(emoji.alt.replace(/:/g, ""))) {
                   return;
                 }
-
                 emoji.alt = this.emojiLookup[emoji.alt.replace(/:/g, "")];
               });
             });
@@ -67,12 +63,5 @@ module.exports = (Plugin, Library) => {
     checkEmojiIsStandard(name) {
       return this.emojiLookup[name] !== undefined;
     }
-
-    getSettingsPanel() {
-      return Settings.SettingPanel.build(this.saveSettings.bind(this),
-        new Settings.SettingGroup("There are currently no settings. Sorry!!")
-        )
-    }
   };
-
 };
