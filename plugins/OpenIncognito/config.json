@@ -1,0 +1,28 @@
+{
+  "info": {
+    "name": "OpenIncognito",
+    "authors": [
+      {
+        "name": "Cobular",
+        "discord_id": "249705405372956672",
+        "github_username": "JakeCover",
+        "twitter_username": "cobular_"
+      }
+    ],
+    "version": "1.0.0",
+    "description": "A BetterDiscord plugin to enable the opening of links in discord in incognito mode, automatically!",
+    "github": "https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/OpenIncognito",
+    "github_raw": "https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/OpenIncognito.plugin.js",
+    "paypalLink": "https://paypal.me/cobular"
+  },
+  "changelog": [
+    {
+      "title": "Created Plugin",
+      "items": [
+        "Created the plugin!!",
+        "Wowza!!"
+      ]
+    }
+  ],
+  "main": "index.js"
+}

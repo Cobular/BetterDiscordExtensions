@@ -38,7 +38,7 @@ for (let f = 0; f < list.length; f++) {
     const pluginName = list[f];
     const configPath = path.join(pluginsPath, pluginName, "config.json");
     console.log(`Building ${pluginName} from ${configPath}`);
-    
+
     if (!fs.existsSync(configPath)) {
         console.error(`Could not find "${configPath}". Skipping...`);
         continue;
@@ -52,10 +52,10 @@ for (let f = 0; f < list.length; f++) {
         INNER: content,
         WEBSITE: config.info.github,
         SOURCE: config.info.github_raw,
-        PATREON: config.info.patreonLink,
-        PAYPAL: config.info.paypalLink,
-        AUTHOR_LINK: config.info.authorLink,
-        INVITE_CODE: config.info.inviteCode,
+        PATREON: config.info.patreonLink ? ("patreonLink" in config.info) : "",
+        PAYPAL: config.info.paypalLink ? ("paypalLink" in config.info) : "",
+        AUTHOR_LINK: config.info.authorLink ? ("authorLink" in config.info) : "",
+        INVITE_CODE: config.info.inviteCode ? ("inviteCode" in config.info) : "",
         INSTALL_SCRIPT: libConfig.addInstallScript ? require(path.join(__dirname, "installscript.js")) : ""
     });
     if (libConfig.addInstallScript) result = result + "\n/*@end@*/";
