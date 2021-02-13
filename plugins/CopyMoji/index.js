@@ -1,6 +1,6 @@
 module.exports = (Plugin, Library) => {
 
-  const {Logger, Settings, DOMTools} = Library;
+  const {Logger, DOMTools} = Library;
 
   return class CopyMoji extends Plugin {
     constructor() {
@@ -11,13 +11,11 @@ module.exports = (Plugin, Library) => {
 
     onStart() {
       // register an observer on emoji classes
-      Logger.log("Started");
       this.subscription = DOMTools.observer.subscribeToQuerySelector(this.onEmojiRender, "img.emoji", this, true);
       this.generateEmojiMap(BdApi.findModuleByProps("EMOJI_NAME_RE").all());
     }
 
     onStop() {
-      Logger.log("Stopped");
       DOMTools.observer.unsubscribe(this.subscription);
     }
 
