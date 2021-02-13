@@ -1,0 +1,34 @@
+{
+  "info": {
+    "name": "HiddenChannels",
+    "authors": [
+      {
+        "name": "Cobular",
+        "discord_id": "249705405372956672",
+        "github_username": "JakeCover",
+        "twitter_username": "cobular_"
+      },
+      {
+        "name": "TJ Horner",
+        "discord_id": "118434436361617412",
+        "github_username": "TJHorner",
+        "twitter_username": "bcrypt"
+      }
+    ],
+    "version": "1.0.0",
+    "description": "Utilizes an intended feature in the Discord API to reveal all channels you don't have permissions for! You can't view the content, but you can see the topic and names. Don't worry, we tried to disclose resposibly first and they didn't do anything :shrug:",
+    "github": "https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/HiddenChannels",
+    "github_raw": "https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/HiddenChannels.plugin.js",
+    "paypalLink": "https://paypal.me/cobular"
+  },
+  "changelog": [
+    {
+      "title": "Created Plugin - 1.0.0",
+      "items": [
+        "Created the plugin!!",
+        "Wowza!!"
+      ]
+    }
+  ],
+  "main": "index.js"
+}
