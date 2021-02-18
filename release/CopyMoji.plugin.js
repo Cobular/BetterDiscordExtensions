@@ -1,12 +1,15 @@
 /**
  * @name CopyMoji
+ * @invite true
+ * @authorLink 
  * @donate true
+ * @patreon 
  * @website https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji
  * @source https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js
  */
 /*@cc_on
 @if (@_jscript)
-
+	
 	// Offer to self-install for clueless users that try to run this directly.
 	var shell = WScript.CreateObject("WScript.Shell");
 	var fs = new ActiveXObject("Scripting.FileSystemObject");
@@ -29,7 +32,7 @@
 @else@*/
 
 module.exports = (() => {
-    const config = {"info":{"name":"CopyMoji","authors":[{"name":"Cobular","discord_id":"249705405372956672","github_username":"JakeCover","twitter_username":"cobular_"}],"version":"1.1.0","description":"By default, when you select and copy text on discord with emojis in it, Discord decides that it should copy the message, not with the emojis as actual emojis, but as `:emojiName:` strings. For standard emojis, this behavior is really dumb!\nTo fix this, I made this plugin, which will change that default behavior. Instead of that, this will make it so that standard emojis (emojis that aren't set custom on a server) are actually copied the way you would expect, so they can be taken into other messaging apps or text documents!","github":"https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji","github_raw":"https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js","paypalLink":"https://paypal.me/cobular"},"changelog":[{"title":"A few updates - 1.1.0","items":["Removed unused settings menu","Fixed potential memory leak","Significantly expanded on description","Removed unnecessary console log. Sorry about that!","Removed unnecessary content from meta tag"]},{"title":"Created Plugin - 1.0.0","items":["Created the plugin!!","Wowza!!"]}],"main":"index.js"};
+    const config = {"info":{"name":"CopyMoji","authors":[{"name":"Cobular","discord_id":"249705405372956672","github_username":"JakeCover","twitter_username":"cobular_"}],"version":"1.1.0","description":"By default, when you select and copy text on discord with emojis in it, Discord decides that it should copy the message, not with the emojis as actual emojis, but as `:emojiName:` strings. For standard emojis, this behavior is really dumb!\nTo fix this, I made this plugin, which will change that default behavior. Instead of that, this will make it so that standard emojis (emojis that aren't set custom on a server) are actually copied the way you would expect, so they can be taken into other messaging apps or text documents!","github":"https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji","github_raw":"https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js","paypalLink":"https://paypal.me/cobular","inviteCode":"Dah7RHH"},"changelog":[{"title":"A few updates - 1.1.0","items":["Removed unused settings menu","Fixed potential memory leak","Significantly expanded on description","Removed unnecessary console log. Sorry about that!","Removed unnecessary content from meta tag"]},{"title":"Created Plugin - 1.0.0","items":["Created the plugin!!","Wowza!!"]}],"main":"index.js"};
 
     return !global.ZeresPluginLibrary ? class {
         constructor() {this._config = config;}
@@ -54,7 +57,7 @@ module.exports = (() => {
     } : (([Plugin, Api]) => {
         const plugin = (Plugin, Library) => {
 
-  const {Logger, Settings, DOMTools} = Library;
+  const {Logger, DOMTools} = Library;
 
   return class CopyMoji extends Plugin {
     constructor() {
@@ -65,13 +68,11 @@ module.exports = (() => {
 
     onStart() {
       // register an observer on emoji classes
-      Logger.log("Started");
       this.subscription = DOMTools.observer.subscribeToQuerySelector(this.onEmojiRender, "img.emoji", this, true);
       this.generateEmojiMap(BdApi.findModuleByProps("EMOJI_NAME_RE").all());
     }
 
     onStop() {
-      Logger.log("Stopped");
       DOMTools.observer.unsubscribe(this.subscription);
     }
 

@@ -13,7 +13,8 @@
     "description": "By default, when you select and copy text on discord with emojis in it, Discord decides that it should copy the message, not with the emojis as actual emojis, but as `:emojiName:` strings. For standard emojis, this behavior is really dumb!\nTo fix this, I made this plugin, which will change that default behavior. Instead of that, this will make it so that standard emojis (emojis that aren't set custom on a server) are actually copied the way you would expect, so they can be taken into other messaging apps or text documents!",
     "github": "https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji",
     "github_raw": "https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js",
-    "paypalLink": "https://paypal.me/cobular"
+    "paypalLink": "https://paypal.me/cobular",
+    "inviteCode": "Dah7RHH"
   },
   "changelog": [
     {
