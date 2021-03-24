@@ -9,7 +9,7 @@ module.exports = (Plugin, Library) => {
     DCM,
     PluginUtilities,
     DiscordModules,
-    DOMTools,
+    Settings,
     Patcher
   } = Library;
 
@@ -59,6 +59,10 @@ module.exports = (Plugin, Library) => {
         "UCLA": this.stringToEmojiArray("UCLA"),
         "GAY": this.stringToEmojiArray("GAY"),
       };
+    }
+
+    getSettingsPanel() {
+      return Settings.SettingPanel().build()
     }
 
     onStart() {
