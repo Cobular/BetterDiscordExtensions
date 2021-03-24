@@ -1,0 +1,27 @@
+{
+  "info": {
+    "name": "PhraseReact",
+    "authors": [
+      {
+        "name": "Cobular",
+        "discord_id": "249705405372956672",
+        "github_username": "JakeCover",
+        "twitter_username": "cobular_"
+      }
+    ],
+    "version": "1.0.0",
+    "description": "Allows you to quickly and easily react to a message with a string of regional indicator emojis",
+    "github": "https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/PhraseReact",
+    "github_raw": "https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/PhraseReact.plugin.js",
+    "paypalLink": "https://paypal.me/cobular"
+  },
+  "changelog": [
+    {
+      "title": "Created Plugin - 1.0.0",
+      "items": [
+        "Created the plugin!!"
+      ]
+    }
+  ],
+  "main": "index.js"
+}
