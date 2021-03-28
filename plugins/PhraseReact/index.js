@@ -1,19 +1,26 @@
 module.exports = (Plugin, Library) => {
 
   const {
-    Logger,
     WebpackModules,
-    DiscordAPI,
-    Utilities,
-    DiscordSelectors,
     DCM,
     PluginUtilities,
-    DiscordModules,
     Settings,
     Patcher
   } = Library;
 
-  return class HiddenChannels extends Plugin {
+  const Textbox = class Textbox extends Settings.Textbox {
+    constructor(index, value, listener, options) {
+      super(index, undefined, value, listener, options);
+
+      this.m_index = index;
+    }
+
+    get index() {
+      return this.m_index;
+    }
+  };
+
+  return class PhraseReact extends Plugin {
     constructor() {
       super();
 
@@ -45,27 +52,15 @@ module.exports = (Plugin, Library) => {
         "y": ["🇾"],
         "z": ["🇿"],
       };
-
       this.addReactionModule = WebpackModules.getByProps("addReaction");
-
       this.reactionDelayMS = 200;
-
       this.contextMenuPatches = [];
-
-      this.emojiPhrases = {
-        "FUCK": this.stringToEmojiArray("FUCK"),
-        "SHIT": this.stringToEmojiArray("SHIT"),
-        "PENIS": this.stringToEmojiArray("PENIS"),
-        "UCLA": this.stringToEmojiArray("UCLA"),
-        "GAY": this.stringToEmojiArray("GAY"),
-      };
-    }
-
-    getSettingsPanel() {
-      return Settings.SettingPanel().build()
+      this.emojiPhrases = {};
     }
 
     onStart() {
+      this.loadSettings();
+      this.updateEmojiPhrases();
       this.patchMessageContextMenu();
     }
 
@@ -153,6 +148,100 @@ module.exports = (Plugin, Library) => {
         result[key] = mapFn(object[key]);
         return result;
       }, {});
+    }
+
+    getSettingsPanel() {
+      const self = this;
+
+      const panel = document.createElement("div");
+      panel.className = "form";
+      panel.style = "width:100%;";
+      const phraseTextboxItems = new Settings.SettingGroup(this.getName(), {shown: true});
+
+      function countPhrases(panel) {
+        return panel.children[0].children[1].childElementCount - 1;
+      }
+
+      function addPhrase(listener, position, value = undefined) {
+        const textBox = new Textbox(position + 1, value, listener, {placeholder: "Phrase"});
+        phraseTextboxItems.append(textBox);
+        return textBox;
+      }
+
+      const addPhraseButton = document.createElement("button");
+      // TODO: remove hardcoded classes
+      addPhraseButton.className = "button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeMedium-1AC_Sl grow-q77ONN";
+      addPhraseButton.style = "margin:5px;"
+      addPhraseButton.addEventListener("click", () => {
+        const textBox = addPhrase(() => {
+        }, countPhrases(panel));
+        self.settings.emojiPhrasesList.push("");
+        textBox.addListener((text) => {
+          self.updateSettingField(text, textBox.index - 1);
+        });
+      });
+      addPhraseButton.innerText = "Add New Phrase";
+
+      const removePhraseButton = document.createElement("button");
+      // TODO: remove hardcoded classes
+      removePhraseButton.className = "button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeMedium-1AC_Sl grow-q77ONN";
+      removePhraseButton.style = "margin:5px;"
+      removePhraseButton.addEventListener("click", () => {
+        panel.children[0].children[1].removeChild(panel.children[0].children[1].lastChild)
+        self.settings.emojiPhrasesList.pop()
+        this.updateEmojiPhrases()
+        this.saveSettings()
+      });
+      removePhraseButton.innerText = "Remove Phrase";
+
+      const buttonContainer = document.createElement("div")
+      buttonContainer.className = "buttonContainer";
+      buttonContainer.style = "width:100%; display:flex;";
+      console.log(buttonContainer)
+      buttonContainer.append(addPhraseButton)
+      buttonContainer.append(removePhraseButton)
+
+      phraseTextboxItems.appendTo(panel).append(buttonContainer)
+      this.settings.emojiPhrasesList.forEach((phrase, index) => addPhrase((text) => {
+        self.updateSettingField(text, index);
+      }, index, phrase));
+      return panel;
+    }
+
+    updateSettingField(text, index) {
+      this.settings.emojiPhrasesList[index] = text;
+      this.updateEmojiPhrases();
+      this.saveSettings();
+    }
+
+    updateEmojiPhrases() {
+      this.emojiPhrases = {};
+      this.settings.emojiPhrasesList.forEach((phrase) => {
+        const emojiPhrase = this.stringToEmojiArray(phrase);
+        if (emojiPhrase)
+          this.emojiPhrases[phrase] = emojiPhrase;
+      });
+    }
+
+    get defaultSettings() {
+      return {
+        emojiPhrasesList: [
+          "LMAO",
+          "FUCK",
+          "EE",
+          "YIKES",
+          "GAMER",
+          "POG"
+        ]
+      };
+    }
+
+    loadSettings() {
+      this.settings = PluginUtilities.loadSettings(this.getName(), this.defaultSettings);
+    }
+
+    saveSettings() {
+      PluginUtilities.saveSettings(this.getName(), this.settings);
     }
   };
 };
