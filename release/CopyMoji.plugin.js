@@ -1,15 +1,19 @@
 /**
  * @name CopyMoji
- * @invite true
- * @authorLink 
- * @donate true
- * @patreon 
+ * @invite mGHadqTt9R
+ * @authorLink https://github.com/JakeCover
+ * @author Cobular
+ * @authorId 249705405372956672
+ * @version 1.1.0
+ * @description By default, when you select and copy text on discord with emojis in it, Discord decides that it should copy the message, not with the emojis as actual emojis, but as `:emojiName:` strings. For standard emojis, this behavior is really dumb!
+ To fix this, I made this plugin, which will change that default behavior. Instead of that, this will make it so that standard emojis (emojis that aren't set custom on a server) are actually copied the way you would expect, so they can be taken into other messaging apps or text documents!
+ * @donate https://github.com/sponsors/JakeCover
  * @website https://github.com/JakeCover/BetterDiscordExtensions/tree/main/plugins/CopyMoji
- * @source https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/JakeCover/BetterDiscordExtensions/main/release/CopyMoji.plugin.js
  */
 /*@cc_on
 @if (@_jscript)
-	
+
 	// Offer to self-install for clueless users that try to run this directly.
 	var shell = WScript.CreateObject("WScript.Shell");
 	var fs = new ActiveXObject("Scripting.FileSystemObject");
